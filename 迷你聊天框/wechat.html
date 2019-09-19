@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/my.css">
+    <title>迷你聊天框</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header"><span style="float: left">皮卡丘</span><span style="float: right">20:30</span></div>
+        <ul class="content">
+        </ul>
+        <div class="footer">
+            <div class="pic">
+                    <img src="img/皮卡丘.jpg" alt="图片找不到了" id="icon">
+            </div>
+            <input type="text" id="text" placeholder="说点什么吧……">
+            <span id="btn">发送</span>
+        </div>
+    </div>
+
+</body>
+<script>
+    // 点击图片更改角色
+    var img = document.getElementById("icon");
+    var arr =["img/皮卡丘.jpg","img/1.jpg"];
+    var tag =0;
+    img.onclick=function(){
+    if(tag == 0){
+        img.src =arr[1];
+        tag = 1;
+    }else{
+        img.src = arr[0];
+        tag = 0;
+    }
+    }
+    // 判断聊天框内容是否为空
+    var btn = document.getElementById("btn");
+    var num = -1;
+    btn.onclick = function(){
+    var text =document.getElementById("text").value;
+        if(text == ""){
+            alert("发送内容不能为空");
+        }else{
+            var content = document.getElementsByClassName("content")[0];
+            content.innerHTML +=  "<li><img src='"+arr[tag]+"'><span>"+text+"</span></li>";
+        }
+        var imgs = content.getElementsByTagName("img");
+        var spans = content.getElementsByTagName("span");
+        num++;
+        // console.log(imgs[num]);
+        // console.log(spans[num]);
+        // console.log(num);
+// 判断用户类型
+        if(tag == 0){
+            imgs[num].className = "imgleft";
+            spans[num].className = "spanleft";
+        }else{
+            imgs[num].className = "imgright";
+            spans[num].className = "spanright"; 
+        }
+// 清空输入框
+        document.getElementById("text").value = "";
+    }
+
+</script>
+</html>
