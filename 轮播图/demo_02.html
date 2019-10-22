@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用jQuery实现轮播图</title>
+    <style>
+    #box{
+        width: 750px;
+        height: 400px;
+        /* background-color: pink; */
+        margin: 50px auto;
+        position: relative;
+    }
+    #list{
+        height: 25px;
+        position: absolute;
+        left: 50%;
+        /* 减去盒子宽度的一半 */
+        transform: translateX(-50%);
+        bottom: 50px;
+        padding: 0;
+    }
+    #list li{
+        list-style: none;
+        display: inline-block;
+        height: 22px;
+        width: 22px;
+        background-color:  #aaa;
+        border-radius: 50%;
+        text-align: center;
+        margin-left: 5px;
+    }
+    #left,
+    #right{
+        width: 50px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        background-color: rgb(0,0,0,0.3);
+        position: absolute;
+        top:50%;
+        transform: translateY(-50%);
+        color: white;
+        display:none;
+        cursor: pointer;
+    }
+    #left{
+        left: 0;
+    }
+    #right{
+        right: 0;  
+    }
+</style>
+</head>
+<body>
+    <div id="box">
+        <img src="img/0.jpg" width="750" height="400" id="pic">
+        <ul id="list">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <div id="left"><</div>
+        <div id="right">></div>
+    </div>
+    <script src="js/jquery.js"></script>
+    <script>
+    //设置定时器
+    $(function(){
+        var index = 0;
+        $('li').eq(index).css('background-color','red');
+        var timer = setInterval(func,2000);
+        function changePic(){
+            if(index == 5){index = 0};
+            if(index == -1){index = 4};
+            $('img').attr("src", 'img/' + index + '.jpg');
+            $('li').siblings().css("background-color",'#aaa');
+            $('li').eq(index).css('background-color','red');
+        }
+        function func(){
+            index++;
+            changePic();
+        }
+         //鼠标移入,按钮显示，定时器关闭；鼠标移出，按钮隐藏，定时器重新开启
+        $('#box').hover(
+            function(){
+            clearInterval(timer);
+            $('#left').show();
+            $('#right').show();
+            },
+            function(){
+                var timer = setInterval(func,2000);
+                $('#left').hide();
+                $('#right').hide();
+            }
+        )
+        //为按钮添加切换图片事件
+        $('#left').click(function(){
+            index--;
+            changePic();
+        })
+        $('#right').click(function(){
+            index++;
+            changePic();
+        })
+        //为小圆点添加图片切换
+        $('li').mouseover(function(){
+            index = $(this).index();//index()方法，获取被选择元素相对于它的同级元素的索引
+            changePic();
+        })
+    })
+    </script>
+</body>
+</html>

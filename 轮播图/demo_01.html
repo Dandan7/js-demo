@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>使用原生js实现轮播图</title>
+</head>
+<style>
+#box{
+    width: 750px;
+    height: 400px;
+    /* background-color: pink; */
+    margin: 50px auto;
+    position: relative;
+}
+#list{
+    height: 25px;
+    position: absolute;
+    left: 50%;
+    /* 减去盒子宽度的一半 */
+    transform: translateX(-50%);
+    bottom: 50px;
+    padding: 0;
+}
+#list li{
+    list-style: none;
+    display: inline-block;
+    height: 22px;
+    width: 22px;
+    background-color:  #aaa;
+    border-radius: 50%;
+    text-align: center;
+    margin-left: 5px;
+}
+#left,
+#right{
+    width: 50px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    background-color: rgb(0,0,0,0.3);
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    color: white;
+    display:none;
+    cursor: pointer;
+}
+#left{
+    left: 0;
+}
+#right{
+    right: 0;  
+}
+</style>
+<body>
+    <div id="box">
+        <img src="img/0.jpg" width="750" height="400" id="pic">
+        <ul id="list">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <div id="left"><</div>
+        <div id="right">></div>
+    </div>
+    <script>
+    //获取dom元素
+    var JSbox = document.getElementById("box");
+    //获取图片结点
+    var JSimg = document.getElementById("pic");
+    //获取ul和li结点
+    var JSul = document.getElementById("list");
+    var JSli = document.getElementsByTagName("li");  
+    //获取左右控制结点
+    var JSleft = document.getElementById("left");
+    var JSright = document.getElementById("right");
+    
+    JSli[0].style.backgroundColor = 'red';
+    //设置当前结点
+    var currentPage = 0;
+    //设置轮播图图片
+    var timer = setInterval(func,2000);
+    function func(){
+        currentPage++;
+        changePic();
+    }
+    //换图片
+    function changePic(){
+        if(currentPage == 5){
+            currentPage = 0;
+        }
+        if(currentPage == -1){
+            currentPage = 4;
+        }
+        //把每一个列表结点的颜色都设置为灰色
+        JSimg.src = 'img/'+ currentPage + '.jpg';
+        for(var i = 0; i<JSli.length; i++){
+            JSli[i].style.backgroundColor = '#aaa'; 
+        }
+        //把当前列表结点的颜色设置为红色
+        JSli[currentPage].style.backgroundColor = 'red'; 
+    }
+    //鼠标移入
+    JSbox.addEventListener('mouseover',function(){
+        //取消定时器，展示左右按钮
+        clearInterval(timer);
+        JSleft.style.display = "block";
+        JSright.style.display = "block";
+    })
+    //鼠标移出
+    JSbox.addEventListener('mouseout',function(){
+        //重启定时器，隐藏左右按钮
+        timer = setInterval(func,2000);
+        JSleft.style.display = "none";
+        JSright.style.display = "none";
+    })
+    //为左按钮设置点击切换图片
+    JSleft.addEventListener('click', function(){
+        currentPage--;
+        changePic();
+    })
+    //为右按钮设置点击切换图片
+    JSright.addEventListener('click', function(){
+        currentPage++;
+        changePic();
+    })
+    //为每个小圆点设置鼠标移入事件
+    for(var j = 0; j<JSli.length; j++){
+        let index = j;
+        JSli[j].addEventListener('mouseover',function(j){
+            currentPage = index;
+            changePic();
+        })
+    }
+    </script>
+</body>
+</html>
